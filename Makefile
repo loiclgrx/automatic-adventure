@@ -32,6 +32,7 @@ language.tab.cpp language.tab.hpp: language.ypp
 
 lex.yy.cpp: language.l
 	flex language.l ; mv lex.yy.c lex.yy.cpp
+	
 clean: 
 	rm -f $(EXE) $(OBJECTS) 29.tar.gz 29.zip language.tab.cpp language.tab.hpp lex.yy.cpp lex.yy.o *~
 

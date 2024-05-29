@@ -3,27 +3,31 @@
 #include "global.hpp"
 
 char lexeme[MAX_ID_LENGTH + 1];
-int  lineno = 1;
+int lineno = 1;
 int token_value = NONE;
 
-int lexan()  /*  lexical analyzer  */
+int lexan() // lexical analyzer
 {
     int c;
-    while(1) {
+    while (1)
+    {
         c = getchar();
         if (c == ' ' || c == '\t')
-            ;  /*  strip out white space  */
+            ; // strip out white space
         else if (c == '\n')
             lineno = lineno + 1;
-        else if (isdigit(c)) {  /*  c is a digit  */
+        else if (isdigit(c))
+        { // c is a digit
             ungetc(c, stdin);
             scanf("%d", &yylval);
             return NUM;
         }
-        else if (isalpha(c)) {  /*  c is a letter */
+        else if (isalpha(c))
+        { // c is a letter
             int id_number, chars = 0;
-            while (isalnum(c)) {  /* c is alphanumeric  */
-                lexeme[chars++] = c; 
+            while (isalnum(c))
+            { // c is alphanumeric
+                lexeme[chars++] = c;
                 if (chars > MAX_ID_LENGTH)
                     error("identifier too long");
                 c = getchar();
@@ -39,7 +43,8 @@ int lexan()  /*  lexical analyzer  */
         }
         else if (c == EOF)
             return DONE;
-        else {
+        else
+        {
             yylval = NONE;
             return c;
         }

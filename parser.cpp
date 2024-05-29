@@ -11,46 +11,62 @@ void start(), list(), expr(), moreterms(), term(), morefactors(), factor(), assi
 int stack[MAX_STACK_SIZE];
 int top = -1;
 
-void push(int value) {
-    if (top < MAX_STACK_SIZE - 1) {
+void push(int value)
+{
+    if (top < MAX_STACK_SIZE - 1)
+    {
         stack[++top] = value;
-    } else {
+    }
+    else
+    {
         error("Stack overflow");
     }
 }
 
-int pop() {
-    if (top >= 0) {
+int pop()
+{
+    if (top >= 0)
+    {
         return stack[top--];
-    } else {
+    }
+    else
+    {
         error("Stack underflow");
         return 0; // Return a default value in case of underflow
     }
 }
 
-void parse() /*  parses and translates expression list  */ {
+void parse() // parses and translates expression list
+{
     lookahead = lexan();
     start();
 }
 
-void start() {
-    /* Just one production for start, so we don't need to check lookahead */
+void start()
+{
+    // Just one production for start, so we don't need to check lookahead
     list();
     match(DONE);
 }
 
-void list() {
-    if (lookahead == '(' || lookahead == ID || lookahead == NUM) {
+void list()
+{
+    if (lookahead == '(' || lookahead == ID || lookahead == NUM)
+    {
         assignment();
         match(';');
         list();
-    } else {
-        /* Empty */
+    }
+    else
+    {
+        // Empty
     }
 }
 
-void assignment() {
-    if (lookahead == ID) {
+void assignment()
+{
+    if (lookahead == ID)
+    {
         int id_number = token_value;
         match(ID);
         emit(ID, id_number);
@@ -60,19 +76,24 @@ void assignment() {
         emit('=', token_value);
         symtable[id_number].value = result;
         printf("%s = %d\n", symtable[id_number].lexeme, result); // Print the assigned value
-    } else {
+    }
+    else
+    {
         error("syntax error in assignment");
     }
 }
 
-void expr() {
-    /* Just one production for expr, so we don't need to check lookahead */
+void expr()
+{
+    // Just one production for expr, so we don't need to check lookahead
     term();
     moreterms();
 }
 
-void moreterms() {
-    if (lookahead == '+') {
+void moreterms()
+{
+    if (lookahead == '+')
+    {
         match('+');
         term();
 
@@ -82,7 +103,9 @@ void moreterms() {
 
         emit('+', token_value);
         moreterms();
-    } else if (lookahead == '-') {
+    }
+    else if (lookahead == '-')
+    {
         match('-');
         term();
 
@@ -92,19 +115,24 @@ void moreterms() {
 
         emit('-', token_value);
         moreterms();
-    } else {
-        /* Empty */
+    }
+    else
+    {
+        // Empty
     }
 }
 
-void term() {
-    /* Just one production for term, so we don't need to check lookahead */
+void term()
+{
+    // Just one production for term, so we don't need to check lookahead
     factor();
     morefactors();
 }
 
-void morefactors() {
-    if (lookahead == '*') {
+void morefactors()
+{
+    if (lookahead == '*')
+    {
         match('*');
         factor();
 
@@ -114,63 +142,83 @@ void morefactors() {
 
         emit('*', token_value);
         morefactors();
-    } else if (lookahead == '/') {
+    }
+    else if (lookahead == '/')
+    {
         match('/');
         factor();
 
         int b = pop();
         int a = pop();
-        if (b == 0) {
+        if (b == 0)
+        {
             error("Division by zero");
             push(0); // Push a default value on error
-        } else {
+        }
+        else
+        {
             push(a / b);
         }
 
         emit('/', token_value);
         morefactors();
-    } else if (lookahead == DIV) {
+    }
+    else if (lookahead == DIV)
+    {
         match(DIV);
         factor();
 
         int b = pop();
         int a = pop();
-        if (b == 0) {
+        if (b == 0)
+        {
             error("Division by zero");
             push(0); // Push a default value on error
-        } else {
+        }
+        else
+        {
             push(a / b);
         }
 
         emit(DIV, token_value);
         morefactors();
-    } else if (lookahead == MOD) {
+    }
+    else if (lookahead == MOD)
+    {
         match(MOD);
         factor();
 
         int b = pop();
         int a = pop();
-        if (b == 0) {
+        if (b == 0)
+        {
             error("Division by zero");
             push(0); // Push a default value on error
-        } else {
+        }
+        else
+        {
             push(a % b);
         }
 
         emit(MOD, token_value);
         morefactors();
-    } else {
-        /* Empty */
+    }
+    else
+    {
+        // Empty
     }
 }
 
-void factor() {
+void factor()
+{
     exponential_arguments();
     more_exponential_arguments();
 }
 
-void more_exponential_arguments() {
-    if (lookahead == '^') {
+void more_exponential_arguments()
+{
+    if (lookahead == '^')
+    {
         match('^');
         exponential_arguments();
 
@@ -178,7 +226,8 @@ void more_exponential_arguments() {
         int base = pop();
         int result = 1;
 
-        for (int i = 0; i < exp; i++) {
+        for (int i = 0; i < exp; i++)
+        {
             result *= base;
         }
 
@@ -186,35 +235,45 @@ void more_exponential_arguments() {
 
         emit('^', token_value);
         more_exponential_arguments();
-    } else {
-        /* Empty */
+    }
+    else
+    {
+        // Empty
     }
 }
 
-void exponential_arguments() {
-    if (lookahead == '(') {
+void exponential_arguments()
+{
+    if (lookahead == '(')
+    {
         match('(');
         expr();
         match(')');
-    } else if (lookahead == ID) {
+    }
+    else if (lookahead == ID)
+    {
         int id_number = token_value;
         match(ID);
         int var_value = symtable[id_number].value;
         push(var_value);
 
         emit(ID, id_number);
-    } else if (lookahead == NUM) {
+    }
+    else if (lookahead == NUM)
+    {
         int num_value = token_value;
         match(NUM);
 
         push(num_value);
 
         emit(NUM, num_value);
-    } else
+    }
+    else
         error("syntax error in factor");
 }
 
-void match(int t) {
+void match(int t)
+{
     if (lookahead == t)
         lookahead = lexan();
     else

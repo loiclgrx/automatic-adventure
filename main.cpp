@@ -2,9 +2,9 @@
 
 #include "global.hpp"
 
-int main(void) 
+int main(void)
 {
     init();
     parse();
-    exit(0); /* successful termination */
+    exit(0); // successful termination
 }
