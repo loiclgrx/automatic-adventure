@@ -9,10 +9,11 @@ A small compiler that builds an abstract syntax tree (AST) and executes it using
 - [Installation](#installation)
 - [Usage](#usage)
 - [File Structure](#file-structure)
+- [Contributions](#contributions)
 
 ## Introduction
 
-This project is a simple compiler and interpreter that processes a custom programming language. It builds an abstract syntax tree (AST) from the input source code and then interprets the AST to execute the program.
+This project was part of the course Compilers and Interpreters at Örebro University, it is a simple compiler and interpreter that processes a custom programming language. It builds an abstract syntax tree (AST) from the input source code and then interprets the AST to execute the program.
 
 ## Features
 
@@ -24,7 +25,7 @@ This project is a simple compiler and interpreter that processes a custom progra
 
 ## Installation
 
-To build and run the project, ensure you have a C++ compiler and make installed. Clone the repository and use the provided Makefile:
+To build and run the project, ensure you have a C++ compiler, Flex and Bison and make installed. Clone the repository and use the provided Makefile:
 
 ```sh
 git clone https://github.com/loiclgrx/compiler-and-interpreter.git
@@ -43,6 +44,7 @@ After building the project, you can run the compiler with:
 Replace <source_file> with the path to your source code file.
 
 ## File Structure
+
 - bookparser.cpp: Contains the main logic for parsing.
 - emitter.cpp: Handles code emission.
 - error.cpp: Manages error reporting.
@@ -50,7 +52,11 @@ Replace <source_file> with the path to your source code file.
 - init.cpp: Initialization routines.
 - language.l: Flex file for lexical analysis.
 - language.ypp: Bison file for syntax analysis.
-- lexer.cpp: Lexical analyzer.
+- lexer.cpp: Lexical analyzer written before using Flex.
 - main.cpp: Entry point of the application.
-- parser.cpp: Parser implementation.
+- parser.cpp: Parser implementation before using Bison.
 - symbol.cpp: Symbol table management.
+
+## Contributions
+
+This project was made as a group with [Clément Loubet](https://www.linkedin.com/in/cl%C3%A9ment-loubet/), a classmate from my home university which also went to Örebro University for one semester.
